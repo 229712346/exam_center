@@ -1,0 +1,64 @@
+// 颜色变量
+
+@white: #ffffff; // 纯白
+
+@backGround: #e9e9e9; // 整体背景颜色
+
+@headerColor: #324156; // 顶部状态栏颜色
+
+@borderColor: #D5D7D8; // 常用的下边框颜色
+
+@redbgColor:  #FA6B76; // 红色背景颜色
+
+@redColor: #F75137; // 红色点
+
+@greenColor: #56E487; // 绿色点
+
+@boldBgcolor: #202d40; // 深色背景
+
+@textColor: #3a4a5a; // 字体颜色
+
+.boxShadow {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, .12), -1px -1px 4px rgba(0, 0, 0, .04);
+}
+
+// 单行文本溢出
+.rowTextOver {
+  white-space:nowrap;
+  Overflow:hidden;
+  Text-overflow:ellipsis;
+}
+
+// 多行文本溢出
+.rowsTextOver(@num) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @num;
+  word-break: break-all;
+}
+
+// 移除浏览器默认样式
+.removeBrowserDefaultStyle {
+  input, button, textarea, select {
+    *font-size: 100%;
+    -webkit-appearance:none;
+  }
+}
+
+// 打点动画
+.animationLoading {
+  ::after {
+    display: inline-table;
+    content: "...";
+    animation: spin 2s infinite step-start;
+  }
+  @keyframes spin {
+    33% {
+      content: '.';
+    }
+    66% {
+      content: '..';
+    }
+  }
+}

@@ -1,0 +1,44 @@
+@import url('./hover.css');
+
+/* 页面标准 */
+.pagecontent {
+  min-height: calc(100% - 46px);
+}
+
+/* 页面头部标准 */
+.headerbtn {
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eaeaea;
+  padding: 10px;
+}
+.headerbtn .el-select,.el-input {
+  width: 220px;
+  margin: 5px 0;
+}
+.headerbtn .el-button {
+  width: 90px
+}
+
+/* 页面表格标准 */
+.tablelist {
+  padding: 10px;
+}
+
+/* 页面分页标准 */
+.pagination {
+  margin: 7px 0;
+  text-align: center;
+}
+.pagination .el-input {
+  margin: 0 5px;
+}
+
+/* 弹框中的输入框 */
+.dialog_cont {
+  padding: 0 20px 0 0;
+}
+.dialog_cont .el-input,.el-select {
+  width: 100%;
+  margin: 0;
+}
