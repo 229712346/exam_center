@@ -298,7 +298,7 @@
                 addOrEditPaperList: [],//添加和编辑的试卷列表
                 formImport: {
                     pwdType: '0',
-                    pwd: '66666',
+                    pwd: '666666',
                     subjectId: '',
                     paperId: this.selectPaperModel,//sessionStorage.subjectId,
                     workUnit: '',
@@ -686,7 +686,7 @@
                             this.formCandidate.pwd = pwd;
                             this.formImport.pwd = pwd;
                         } else {
-                            this.formCandidate.pwd = '66666';
+                            this.formCandidate.pwd = '666666';
                             this.formImport.pwd = '666666';
                         }
                     } else {
@@ -856,7 +856,7 @@
                 } else {
                     this.isShowPwdInputForAddEdit = true;
                     if (this.formCandidate.pwd === '') {
-                        this.formCandidate.pwd = '66666';
+                        this.formCandidate.pwd = '666666';
                     }
                 }
 
@@ -867,7 +867,7 @@
                 } else {
                     this.isShowPwdInputForImport = true;
                     if (this.formImport.pwd === '') {
-                        this.formImport.pwd = '66666';
+                        this.formImport.pwd = '666666';
                     }
                 }
 
@@ -884,7 +884,7 @@
                     subjectId: '',
                     paperId: '',
                     pwdType: '0',
-                    pwd: '66666',
+                    pwd: '666666',
                     workUnit: '',
                     data: [],
                 };
