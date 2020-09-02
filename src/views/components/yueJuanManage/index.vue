@@ -123,7 +123,7 @@
   </div>
 </template>
 <script>
-    import { getYueJuanManageList, getListForMarking, saveForMarking } from '@/api/yueJuanManage.js'
+    import { getYueJuanManageList, getListForMarking, saveForMarking,getListForManager } from '@/api/yueJuanManage.js'
     import {getSubList, getPaperList} from '@/api/common.js'
     export default {
         name: 'yueJuanManage',
@@ -279,7 +279,7 @@
                     if (this.isFirst) {
                         this.currentPage = 1;
                     }
-                    getYueJuanManageList(this.listParams).then(res => {
+                    getListForManager(this.listParams).then(res => {
                         setTimeout(() => {
                             if ('成功' === res.msg) {
                                 if (res.data.totalRecord > 0) {

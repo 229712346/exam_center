@@ -123,9 +123,9 @@
                     subjectiveName: [
                         {required: true, message: '请输入主观题名称', trigger: 'blur'}
                     ],
-                    subjectRemark: [
-                        {required: true, message: '请输入简介', trigger: 'blur'}
-                    ]
+                    // subjectRemark: [
+                    //     {required: true, message: '请输入简介', trigger: 'blur'}
+                    // ]
                 },
                 isFirst:true,
             }

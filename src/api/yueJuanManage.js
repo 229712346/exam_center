@@ -27,6 +27,14 @@ export function getYueJuanManageList (data) {
     data: setParams(data)
   })
 }
+// 阅卷员的阅卷列表
+export function getListForManager (data) {
+  return request({
+    url: '/exam/score/listForManager',
+    method: 'post',
+    data: setParams(data)
+  })
+}
 // 考生的简答题列表
 export function getListForMarking (data) {
   return request({

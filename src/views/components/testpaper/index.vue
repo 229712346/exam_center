@@ -363,6 +363,7 @@
           :model="formImportTemp"
           status-icon
           label-width="100px"
+          
         >
           <el-row>
             <el-col :span="12">
@@ -390,18 +391,9 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
-              <el-form-item label="考试时长:" prop="paperlength">
-                <el-input
-                  v-model.number="formImportTemp.paperlength"
-                  placeholder="请填写考试时长"
-                  size="small"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="开始时间:" prop="startTime">
-                <el-col :span="11">
+                          <el-col :span="12">
+              <el-form-item label="开始时间:" prop="power">
+                <el-col :span="12">
                   <el-date-picker
                     v-model="formImportTemp.paperStartDate"
                     type="date"
@@ -411,11 +403,10 @@
                     format="yyyy-MM-dd"
                   />
                 </el-col>
-                <el-col :span="1" class="line">-</el-col>
-                <el-col :span="11">
+                <el-col :span="12">
                   <el-time-picker
                     v-model="formImportTemp.paperStartTime"
-                    placeholder="开始时间"
+                    placeholder="时间"
                     size="small"
                     value-format="HH:mm:ss"
                     format="HH:mm:ss"
@@ -423,6 +414,18 @@
                 </el-col>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item label="考试时长:" prop="power">
+                <el-input-number
+                  v-model.number="formImportTemp.paperlength"
+                  placeholder="请填写考试时长"
+                  size="medium"
+                  style="width: 100%;"
+                  :min="1" :max="1000"
+                ></el-input-number>
+              </el-form-item>
+            </el-col>
+
           </el-row>
           <el-row>
             <el-col>
@@ -467,7 +470,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="importDialogFalse('formImportTemp')" size="small">取 消</el-button>
-        <el-button size="small" type="primary" @click="uploadFile">立即上传</el-button>
+        <el-button size="small" type="primary" @click="uploadFile('formImportTemp')">立即上传</el-button>
       </div>
     </el-dialog>
   </div>
@@ -486,7 +489,7 @@ import {
 } from "@/api/testpaper.js";
 import { findSubjectiveName } from "../../../api/subject";
 import { getSubList } from "@/api/common.js";
-
+import {libraryImptDocForTemp} from "@/api/libraryForWord.js"
 export default {
   name: "Testpaper",
   data() {
@@ -680,6 +683,20 @@ export default {
         ],
         answerCount: [{ validator: answerRule, trigger: "change" }],
       },
+    //   importRules: {
+    //     formImportTemp.subjectId: [
+    //       { required: true, message: "请选择考试科目", trigger: "change" },
+    //     ],
+    //     formImportTempPaperName: [
+    //       { required: true, message: "请输入试卷名称", trigger: "blur" },
+    //     ],
+    //     formImportTempPaperlength: [
+    //       { required: true, message: "请输入考试时长", trigger: "blur" },
+    //     ],
+    //     formImportTempPaperStartDate: [
+    //       { required: true, message: "请选择开始时间", trigger: "blur" },
+    //     ],
+    //   },
 
       dialogDetail: false,
       detailInfo: [], // 详情数据
@@ -820,7 +837,7 @@ export default {
         .then((res) => {
           this.subjectList = res.data.list;
           this.selectSubjectList = res.data.list;
-          this.importSubjectList=res.data.list;
+          this.importSubjectList = res.data.list;
           if (this.selectSubjectList && this.selectSubjectList.length > 0) {
             this.selectSubjectModel = this.selectSubjectList[0].id;
             this.getList();
@@ -1131,65 +1148,69 @@ export default {
       // 因为action参数是必填项，我们使用二次确认进行文件上传时，直接填上传文件的url会因为没有参数导致api报404，所以这里将action设置为一个返回为空的方法就行，避免抛错
       return "";
     },
-    clearInfo() {
-      this.formLibraryForWord = {
-        subjectId: "",
-        questionType: "1",
-        questionContent: "",
-        resultCount: "4",
-        explainInfo: "",
-        a: "",
-        b: "",
-        c: "",
-        d: "",
-        e: "",
-        f: "",
-        g: "",
-      };
-      this.formLibraryForWord.questionContent = "";
-    },
     //上传文件
-    uploadFile() {
-      let that = this;
-      if (that.importPaperModel === "") {
-        that.tip("请选择科目！", "warning", "2000");
-        return;
-      }
-      if (that.fileList.length === 0) {
-        that.tip("请选择文件！", "warning", "2000");
-        return;
-      }
-      that.importing = true;
-      that.file = this.fileList[0];
-      let f = this.fileList[0];
-      let importParams = {
-        subjectId: that.importSubjectModel, //sessionStorage.subjectId,
-      };
-      // console.log(importParams);
-      libraryImptDoc(importParams, f)
-        .then((res) => {
-          setTimeout(() => {
-            this.importing = false;
-            const msg = res.msg;
-            if ("成功" === msg) {
-              that.tip(msg, "success", "3000");
+    uploadFile(formImportTemp) {
+     
+          let that = this;
+          if (that.formImportTemp.subjectId === "") {
+            that.tip("请选择科目！", "warning", "2000");
+            return;
+          }
+          if (that.formImportTemp.paperName === "") {
+            that.tip("请填写试卷名称！", "warning", "2000");
+            return;
+          }
+          if (that.formImportTemp.paperlength === "") {
+            that.tip("请填写考试时长！", "warning", "2000");
+            return;
+          }
+          if (that.formImportTemp.paperStartDate === "") {
+            that.tip("请填写开始日期！", "warning", "2000");
+            return;
+          }
+          if (that.formImportTemp.paperStartTime === "") {
+            that.tip("请填写开始时间！", "warning", "2000");
+            return;
+          }
+          if (that.fileList.length === 0) {
+            that.tip("请选择文件！", "warning", "2000");
+            return;
+          }
+          that.importing = true;
+          that.file = this.fileList[0];
+          let f = this.fileList[0];
+          let importParams = {
+            subjectId: that.formImportTemp.subjectId, //sessionStorage.subjectId,
+            timeLength:that.formImportTemp.paperlength,
+            startTime:that.formImportTemp.paperStartDate+" "+that.formImportTemp.paperStartTime,
+            paperName:that.formImportTemp.paperName,
+          };
+          // console.log(importParams);
+          libraryImptDocForTemp(importParams, f)
+            .then((res) => {
+              setTimeout(() => {
+                this.importing = false;
+                const msg = res.msg;
+                if ("成功" === msg) {
+                  that.tip(msg, "success", "3000");
+                  that.isImportDialogTemp = false;
+                  that.clearImportInfo();
+                  that.getList();
+                  that.fileList = [];
+                } else {
+                  that.tip(msg, "warning", "3000");
+                }
+              }, 600);
+              that.$refs.importFile.value = "";
+            })
+            .catch((error) => {
+              // console.log(error);
+            })
+            .finally(() => {
+              that.importing = false;
               that.isImportDialog = false;
-              that.clearInfo();
-              that.getList();
-              that.fileList = [];
-            } else {
-              that.tip(msg, "warning", "3000");
-            }
-          }, 600);
-          that.$refs.importFile.value = "";
-        })
-        .catch((error) => {
-          // console.log(error);
-        })
-        .finally(() => {
-          that.importing = false;
-          that.isImportDialog = false;
-        });
+            });
+       
     },
     fileRemove(file, fileList) {
       this.fileList.splice(this.fileList.indexOf(file.raw), 1);

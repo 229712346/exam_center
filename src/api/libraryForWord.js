@@ -72,3 +72,10 @@ export function libraryImptDoc (data,file) {
     data: setParams(data,file)
   })
 }
+export function libraryImptDocForTemp (data,file) {
+  return request({
+    url: '/exam/paper/createTempPaper',
+    method: 'post',
+    data: setParams(data,file)
+  })
+}
